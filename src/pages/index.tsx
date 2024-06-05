@@ -173,10 +173,28 @@ const Home: NextPage = () => {
   const [infoBoxLength, setInfoBoxLength] = useState(1);
   const [arrestInfo, setArrestInfo] = useState(0);
   const [normalizeIntensity, setNormalizeIntensity] = useState(false);
+  const [mapboxConfig, setMapboxConfig] = useState<{
+    mapboxToken: string;
+    mapboxStyle: string;
+  } | null>(null);
 
   useEffect(() => {
-    console.log("arrestData updated:", arrestData);
-  }, [arrestData]);
+    const fetchMapboxConfig = async () => {
+      try {
+        const response = await fetch("/api/mapboxConfig");
+        const data = await response.json();
+        setMapboxConfig(data);
+      } catch (error) {
+        console.error("Error fetching Mapbox config:", error);
+      }
+    };
+
+    fetchMapboxConfig();
+  }, []);
+
+  // useEffect(() => {
+  //   console.log("arrestData updated:", arrestData);
+  // }, [arrestData]);
 
   //template name, this is used to submit to the map analytics software what the current state of the map is.
   var mapname = "4118-Map";
@@ -311,8 +329,8 @@ const Home: NextPage = () => {
   }, [normalizeIntensity]);
 
   useEffect(() => {
-    mapboxgl.accessToken =
-      "pk.eyJ1Ijoia2VubmV0aG1lamlhIiwiYSI6ImNsZG1oYnpxNDA2aTQzb2tkYXU2ZWc1b3UifQ.PxO_XgMo13klJ3mQw1QxlQ";
+    if (mapboxConfig && divRef.current) {
+      mapboxgl.accessToken = mapboxConfig.mapboxToken;
 
     const formulaForZoom = () => {
       if (typeof window != "undefined") {
@@ -334,7 +352,7 @@ const Home: NextPage = () => {
 
     var mapparams: any = {
       container: divRef.current, // container ID
-      style: "mapbox://styles/kennethmejia/climkzw58008101r8cpo4df4r", // style URL (THIS IS STREET VIEW)
+      style: mapboxConfig.mapboxStyle,
       center: [-118.41, 34], // starting position [lng, lat]
       zoom: formulaForZoom(), // starting zoom
     };
@@ -928,7 +946,7 @@ const Home: NextPage = () => {
     if (getmapboxlogo) {
       getmapboxlogo.remove();
     }
-  }, []);
+  }}, [mapboxConfig]);
 
   useEffect(() => {
     let arrayoffilterables: any = [];
@@ -1079,11 +1097,11 @@ const Home: NextPage = () => {
           <meta
             name="twitter:image"
             key="twitterimg"
-            content="https://4118-map.vercel.app/4118.png"
+            content="https://4118arrests.lacontroller.app/4118.png"
           ></meta>
           <meta name="description" content="LAPD Arrests 2019." />
 
-          <meta property="og:url" content="https://4118-map.vercel.app" />
+          <meta property="og:url" content="https://4118arrests.lacontroller.app" />
           <meta property="og:type" content="website" />
           <meta
             property="og:title"
@@ -1095,7 +1113,7 @@ const Home: NextPage = () => {
           />
           <meta
             property="og:image"
-            content="https://4118-map.vercel.app/4118.png"
+            content="https://4118arrests.lacontroller.app/4118.png"
           />
         </Head>
 
