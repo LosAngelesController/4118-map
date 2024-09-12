@@ -1642,26 +1642,21 @@ const Home: NextPage = () => {
         </div>
 
         <div ref={divRef} style={{}} className="map-container w-full h-full " />
-
-        {(typeof window !== "undefined" ? window.innerWidth >= 640 : false) && (
-          <>
-            <div
-              className={`absolute md:mx-auto z-9 bottom-2 left-1 md:left-1/2 md:transform md:-translate-x-1/2`}
-            >
-              <a
-                href="https://controller.lacity.gov/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <img
-                  src="https://controller.lacity.gov/images/KennethMejia-logo-white-elect.png"
-                  className="h-9 md:h-10 z-40"
-                  alt="Kenneth Mejia LA City Controller Logo"
-                />
-              </a>
-            </div>
-          </>
-        )}
+        <div
+          className={`absolute left-1 bottom-2 w-full md:w-auto md:left-1/2 md:transform md:-translate-x-1/2 md:bottom-2`}
+        >
+          <a
+            href="https://controller.lacity.gov/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://controller.lacity.gov/images/KennethMejia-logo-white-elect.png"
+              className="h-9 md:h-10 z-40 mx-auto md:mx-0"
+              alt="Kenneth Mejia LA City Controller Logo"
+            />
+          </a>
+        </div>
       </MantineProvider>
     </div>
   );
